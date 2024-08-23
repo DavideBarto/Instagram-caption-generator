@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram Caption Generator</title>
+</head>
+<body>
+    <h1>Instagram Caption Generator</h1>
+    <form id="caption-form">
+        <label for="description">Enter Description:</label><br>
+        <textarea name="description" id="description" rows="4" cols="50"></textarea><br><br>
+        <input type="submit" value="Generate Caption">
+    </form>
+    <div id="caption"></div>
+
+    <script>
+        document.getElementById('caption-form').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const description = document.getElementById('description').value;
+            const response = await fetch('/generate_caption', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+                body: new URLSearchParams({
+                    'description': description,
+                }),
+            });
+            const result = await response.json();
+            document.getElementById('caption').textContent = result.caption || 'Error generating caption';
+        });
+    </script>
+</body>
+</html>
